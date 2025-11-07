@@ -1,2 +1,2 @@
 # Motion Control of Unitree Go2 Quadruped Robot
-Implementing MPC and RL controller on a GO2 Quadrupled Robot
+A contact force optimization MPC locomotion controller for the Unitree Go2 Quadrupled Robot
