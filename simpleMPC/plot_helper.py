@@ -48,7 +48,7 @@ def plot_traj_tracking(pos_traj_ref, pos_traj_sim, block):
     ax = fig.add_subplot(111, projection='3d')
     
     ax.scatter(pos_traj_ref[0,0], pos_traj_ref[1,0], pos_traj_ref[2,0], label="Initial Position")
-    ax.plot(pos_traj_ref[0,:], pos_traj_ref[1,:], pos_traj_ref[2,:], 'b--', linewidth=2, label="Reference Trajectory")
+    ax.scatter(pos_traj_ref[0,:], pos_traj_ref[1,:], pos_traj_ref[2,:], 'b--', linewidth=2, label="Reference Trajectory")
     ax.plot(pos_traj_sim[0,:], pos_traj_sim[1,:], pos_traj_sim[2,:], 'g-', linewidth=2, label="Optimal")
     #ax.scatter(pos_traj_sim[0,0], pos_traj_sim[1,0], pos_traj_sim[2,0], label="Optimal")
 
@@ -58,26 +58,209 @@ def plot_traj_tracking(pos_traj_ref, pos_traj_sim, block):
     ax.set_zlabel("Z [m]")
     ax.set_box_aspect([1, 1, 1])
 
-    # --- hard enforce equal data ranges ---
-    xs, ys, zs = pos_traj_sim[0,:], pos_traj_sim[1,:], pos_traj_sim[2,:]
+    # --- Auto-zoom with equal scale ---
+    data = np.hstack([pos_traj_ref, pos_traj_sim])   # shape (3, M)
+    mins = data.min(axis=1)
+    maxs = data.max(axis=1)
+    ctr  = (mins + maxs) / 2.0
+    half = (maxs - mins).max() / 2.0                 # largest half-range
+    pad  = 1.05                                      # 5% margin
+    r    = max(half * pad, 1e-9)                     # avoid zero size
 
-    # one symmetric radius for all axes
-    r = float(np.max(np.abs([xs, ys, zs])))   # max abs over all axes & time
+    ax.set_xlim(ctr[0]-r, ctr[0]+r)
+    ax.set_ylim(ctr[1]-r, ctr[1]+r)
+    ax.set_zlim(ctr[2]-r, ctr[2]+r)
+    ax.set_box_aspect([1, 1, 1])                     # equal scaling
 
-    if r == 0:   # handle degenerate paths
-        r = 1e-6
-
-    xmin, xmax = -r, r
-    ymin, ymax = -r, r
-    zmin, zmax = -r, r
-
-    ax.set_xlim(xmin, xmax)
-    ax.set_ylim(ymin, ymax)
-    ax.set_zlim(zmin, zmax)
-
-    ax.legend()
     ax.grid(True)
     ax.legend(loc="best")
+    plt.show(block=block)
+    plt.pause(0.001)
+
+
+
+def plot_mpc_result(t_vec, force, tau, x_vec, block):
+
+    fig, axes = plt.subplots(4, 3, figsize=(15, 10), constrained_layout=True)
+
+    axis = axes[0,0]
+    axis.step(t_vec, force[0, :], label='f_x')
+    axis.step(t_vec, force[1, :], label='f_y')
+    axis.step(t_vec, force[2, :], label='f_z')
+    axis.legend()
+    axis.set_title("Front Left Foot Optimized Contact Force (N)")
+    axis.grid(True)
+
+    axis = axes[1,0]
+    axis.step(t_vec, force[3, :], label='f_x')
+    axis.step(t_vec, force[4, :], label='f_y')
+    axis.step(t_vec, force[5, :], label='f_z')
+    axis.legend()
+    axis.set_title("Front Right Foot Optimized Contact Force (N)")
+    axis.grid(True)
+
+    axis = axes[2,0]
+    axis.step(t_vec, force[6, :], label='f_x')
+    axis.step(t_vec, force[7, :], label='f_y')
+    axis.step(t_vec, force[8, :], label='f_z')
+    axis.legend()
+    axis.set_title("Rear Left Foot Optimized Contact Force (N)")
+    axis.grid(True)
+
+    axis = axes[3,0]
+    axis.step(t_vec, force[9, :], label='f_x')
+    axis.step(t_vec, force[10, :], label='f_y')
+    axis.step(t_vec, force[11, :], label='f_z')
+    axis.legend()
+    axis.set_title("Rear Right Foot Optimized Contact Force (N)")
+    axis.grid(True)
+
+
+
+    axis = axes[0,1]
+    axis.step(t_vec, tau[0, :], label='hip_tau')
+    axis.step(t_vec, tau[1, :], label='thigh_tau')
+    axis.step(t_vec, tau[2, :], label='calf_tau')
+    axis.legend()
+    axis.set_title("Front Left Leg Joint Torque(Nm)")
+    axis.grid(True)
+
+    axis = axes[1,1]
+    axis.step(t_vec, tau[3, :], label='hip_tau')
+    axis.step(t_vec, tau[4, :], label='thigh_tau')
+    axis.step(t_vec, tau[5, :], label='calf_tau')
+    axis.legend()
+    axis.set_title("Front Right Leg Joint Torque(Nm)")
+    axis.grid(True)
+
+    axis = axes[2,1]
+    axis.step(t_vec, tau[6, :], label='hip_tau')
+    axis.step(t_vec, tau[7, :], label='thigh_tau')
+    axis.step(t_vec, tau[8, :], label='calf_tau')
+    axis.legend()
+    axis.set_title("Rear Left Leg Joint Torque(Nm)")
+    axis.grid(True)
+
+    axis = axes[3,1]
+    axis.step(t_vec, tau[9, :], label='hip_tau')
+    axis.step(t_vec, tau[10, :], label='thigh_tau')
+    axis.step(t_vec, tau[11, :], label='calf_tau')
+    axis.legend()
+    axis.set_title("Rear Right Leg Joint Torque(Nm)")
+    axis.grid(True)
+
+
+    axis = axes[0,2]
+    axis.step(t_vec, x_vec[0, :], label='x_pos')
+    axis.step(t_vec, x_vec[1, :], label='y_pos')
+    axis.step(t_vec, x_vec[2, :], label='z_pos')
+    axis.set_title("Base Position")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[1,2]
+    axis.step(t_vec, x_vec[3, :], label='roll')
+    axis.step(t_vec, x_vec[4, :], label='pitch')
+    axis.step(t_vec, x_vec[5, :], label='yaw')
+    axis.set_title("Base Orientation")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[2,2]
+    axis.step(t_vec, x_vec[6, :], label='x_vel')
+    axis.step(t_vec, x_vec[7, :], label='y_vel')
+    axis.step(t_vec, x_vec[8, :], label='z_vel')
+    axis.set_title("Base Velocity")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[3,2]
+    axis.step(t_vec, x_vec[9, :], label='roll_rate')
+    axis.step(t_vec, x_vec[10, :], label='pitch_rate')
+    axis.step(t_vec, x_vec[11, :], label='yaw_rate')
+    axis.set_title("Base Angular Velocity")
+    axis.legend()
+    axis.grid(True)
+
+    plt.show(block=block)   # shows both windows, doesn’t block
+    plt.pause(0.001)        # lets the GUI event loop breathe
+
+
+def plot_swing_foot_traj(t_vec, foot_pos_now, foot_pos_des, foot_vel_now, foot_vel_des, block):
+
+    fig, axes = plt.subplots(2, 1, figsize=(15, 10), constrained_layout=True)
+
+    axis = axes[0]
+    axis.plot(t_vec, foot_pos_now[0,:], color='r', label="pos_x")
+    axis.plot(t_vec, foot_pos_now[1,:], color='g', label="pos_y")
+    axis.plot(t_vec, foot_pos_now[2,:], color='b', label="pos_z")
+    axis.plot(t_vec, foot_pos_des[0,:], color='r', linestyle=':', linewidth=2.5, label="pos_x_des")
+    axis.plot(t_vec, foot_pos_des[1,:], color='g', linestyle=':', linewidth=2.5, label="pos_y_des")
+    axis.plot(t_vec, foot_pos_des[2,:], color='b', linestyle=':', linewidth=2.5, label="pos_z_des")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[1]
+    axis.plot(t_vec, foot_vel_now[0,:], color='r', label="vel_x")
+    axis.plot(t_vec, foot_vel_now[1,:], color='g', label="vel_y")
+    axis.plot(t_vec, foot_vel_now[2,:], color='b', label="vel_z")
+    axis.plot(t_vec, foot_vel_des[0,:], color='r', linestyle=':', label="vel_x_des")
+    axis.plot(t_vec, foot_vel_des[1,:], color='g', linestyle=':', label="vel_y_des")
+    axis.plot(t_vec, foot_vel_des[2,:], color='b', linestyle=':', label="vel_z_des")
+    axis.legend()
+    axis.grid(True)
+
+    plt.show(block=block)   # shows both windows, doesn’t block
+    plt.pause(0.001)        # lets the GUI event loop breathe
+
+def plot_full_traj(traj_ref, x_sim, block):
+
+    fig, axes = plt.subplots(2, 2, figsize=(15, 10), constrained_layout=True)
+
+    N = len(traj_ref[0,:])
+
+    t_vec = range(N)
+
+    axis = axes[0,0]
+    axis.plot(t_vec, traj_ref[0,:], color='r', label="pos_x")
+    axis.plot(t_vec, traj_ref[1,:], color='g', label="pos_y")
+    axis.plot(t_vec, traj_ref[2,:], color='b', label="pos_z")
+    axis.plot(t_vec, x_sim[0,:], color='r', linestyle=':', linewidth=2.5, label="pos_x_des")
+    axis.plot(t_vec, x_sim[1,:], color='g', linestyle=':', linewidth=2.5, label="pos_y_des")
+    axis.plot(t_vec, x_sim[2,:], color='b', linestyle=':', linewidth=2.5, label="pos_z_des")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[1,0]
+    axis.plot(t_vec, traj_ref[3,:], color='r', label="roll")
+    axis.plot(t_vec, traj_ref[4,:], color='g', label="pitch")
+    axis.plot(t_vec, traj_ref[5,:], color='b', label="yaw")
+    axis.plot(t_vec, x_sim[3,:], color='r', linestyle=':', label="roll_des")
+    axis.plot(t_vec, x_sim[4,:], color='g', linestyle=':', label="pitch_des")
+    axis.plot(t_vec, x_sim[5,:], color='b', linestyle=':', label="yaw_des")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[0,1]
+    axis.plot(t_vec, traj_ref[6,:], color='r', label="vel_x")
+    axis.plot(t_vec, traj_ref[7,:], color='g', label="vel_y")
+    axis.plot(t_vec, traj_ref[8,:], color='b', label="vel_z")
+    axis.plot(t_vec, x_sim[6,:], color='r', linestyle=':', linewidth=2.5, label="vel_x_des")
+    axis.plot(t_vec, x_sim[7,:], color='g', linestyle=':', linewidth=2.5, label="vel_y_des")
+    axis.plot(t_vec, x_sim[8,:], color='b', linestyle=':', linewidth=2.5, label="vel_z_des")
+    axis.legend()
+    axis.grid(True)
+
+    axis = axes[1,1]
+    axis.plot(t_vec, traj_ref[9,:], color='r', label="roll_rate")
+    axis.plot(t_vec, traj_ref[10,:], color='g', label="pitch_rate")
+    axis.plot(t_vec, traj_ref[11,:], color='b', label="yaw_rate")
+    axis.plot(t_vec, x_sim[9,:], color='r', linestyle=':', label="roll_rate_des")
+    axis.plot(t_vec, x_sim[10,:], color='g', linestyle=':', label="pitch_rate_des")
+    axis.plot(t_vec, x_sim[11,:], color='b', linestyle=':', label="yaw_rate_des")
+    axis.legend()
+    axis.grid(True)
+
     plt.show(block=block)   # shows both windows, doesn’t block
     plt.pause(0.001)        # lets the GUI event loop breathe
 
