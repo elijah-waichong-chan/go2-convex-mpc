@@ -35,6 +35,7 @@ class Gait():
         base_pos = go2.current_config.base_pos
         base_vel = go2.current_config.base_vel
         R_base_to_world = go2.R_base_to_world
+        yaw_rate = go2.yaw_rate_des
 
         hip_offset = go2.get_hip_offset(leg)
         body_pos = np.array([base_pos[0], base_pos[1], 0])
@@ -47,10 +48,14 @@ class Gait():
         T = t_swing + 0.5*t_stance
         pred_time = T / 2.0
 
-        touchdown_x = hip_pos_world[0] + base_vel[0] * pred_time
-        touchdown_y = hip_pos_world[1] + base_vel[1] * pred_time
-
-        pos_touchdown_world = np.array([touchdown_x, touchdown_y, base_pos[2]])
+        pos_norminal_term = [hip_pos_world[0], hip_pos_world[1], 0.025]
+        pos_drift_term = [base_vel[0] * pred_time, base_vel[1] * pred_time, 0]
+        dtheta = yaw_rate * pred_time
+        rotation_correction_term = [-dtheta * pos_norminal_term[1], dtheta * pos_norminal_term[0], 0]
+        pos_touchdown_world = (np.array(pos_norminal_term)
+                                + np.array(pos_drift_term)
+                                + np.array(rotation_correction_term)
+                                )
 
         return pos_touchdown_world
     
@@ -62,6 +67,7 @@ class Gait():
         pos_com_world = go2.pos_com_world
         vel_com_world = go2.vel_com_world
         R_base_to_world = go2.R_base_to_world
+        yaw_rate = go2.yaw_rate_des
 
         hip_offset = go2.get_hip_offset(leg)
         [foot_pos, foot_vel] = go2.get_single_foot_state_in_world(leg)
@@ -88,15 +94,21 @@ class Gait():
         # Lateral (y) direction – usually weaker
         k_v_y = 0.2 * T          # ~0.1
         k_p_y = 0.05
+
+        pos_norminal_term = [hip_pos_world[0], hip_pos_world[1], 0.025]
+        pos_drift_term = [x_vel_des * pred_time, y_vel_des * pred_time, 0]
+        pos_correction_term = [k_p_x * (pos_com_world[0] - x_pos_des), k_p_y * (pos_com_world[1] - y_pos_des), 0]
+        vel_correction_term = [k_v_x * (vel_com_world[0] - x_vel_des), k_v_y * (vel_com_world[1] - y_vel_des), 0]
+        dtheta = yaw_rate * pred_time
+        rotation_correction_term = [-dtheta * pos_norminal_term[1], dtheta * pos_norminal_term[0], 0]
  
-        touchdown_x = hip_pos_world[0] + x_vel_des * pred_time + k_v_x * (vel_com_world[0] - x_vel_des) + k_p_x * (pos_com_world[0] - x_pos_des)
-        touchdown_y = hip_pos_world[1] + y_vel_des * pred_time + k_v_y * (vel_com_world[1] - y_vel_des) + k_p_y * (pos_com_world[1] - y_pos_des)
-
-        # touchdown_x = hip_pos_world[0] + x_vel_des * pred_time + k_v_x * (vel_com_world[0] - x_vel_des)
-        # touchdown_y = hip_pos_world[1] + y_vel_des * pred_time + k_v_y * (vel_com_world[1] - y_vel_des)
-
-        pos_touchdown_world = np.array([touchdown_x, touchdown_y, 0.025])
-
+        pos_touchdown_world = (np.array(pos_norminal_term)
+                                + np.array(pos_drift_term)
+                                + np.array(pos_correction_term)
+                                + np.array(vel_correction_term)
+                                + np.array(rotation_correction_term)
+                                )
+        
         pos_foot_traj_eval_at_world = self.make_swing_trajectory(foot_pos, pos_touchdown_world, t_swing, h_sw=0.1)
         return pos_foot_traj_eval_at_world, pos_touchdown_world
 
