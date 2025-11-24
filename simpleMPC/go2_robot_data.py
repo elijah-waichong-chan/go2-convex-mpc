@@ -79,6 +79,7 @@ class PinGo2Model:
         self.y_pos_des = []
         self.x_vel_des = []
         self.y_vel_des = []
+        self.yaw_rate_des = []
 
     def get_hip_offset(self, leg: str):
         name = f"{leg.upper()}_hip_offset"
@@ -343,7 +344,7 @@ class PinGo2Model:
         assert N_input == self.dynamics_N, f"Expected {N_input=} to equal {self.dynamics_N=}"
 
         x_traj = np.zeros((12, N_input+1))
-        x_init = self.current_config.compute_simplified_x_vec()
+        x_init = self.compute_com_x_vec()
         x_traj[:, [0]] = x_init
 
         for i in range(N_input):
