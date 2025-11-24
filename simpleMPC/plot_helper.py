@@ -84,9 +84,9 @@ def plot_mpc_result(t_vec, force, tau, x_vec, block):
     fig, axes = plt.subplots(4, 3, figsize=(15, 10), constrained_layout=True)
 
     axis = axes[0,0]
-    axis.step(t_vec, force[0, :], label='f_x')
-    axis.step(t_vec, force[1, :], label='f_y')
-    axis.step(t_vec, force[2, :], label='f_z')
+    axis.step(t_vec, force[0, :], label='x-direction force')
+    axis.step(t_vec, force[1, :], label='y-direction force')
+    axis.step(t_vec, force[2, :], label='z-direction force')
     axis.legend()
     axis.set_title("Front Left Foot Optimized Contact Force (N)")
     axis.grid(True)
@@ -115,12 +115,10 @@ def plot_mpc_result(t_vec, force, tau, x_vec, block):
     axis.set_title("Rear Right Foot Optimized Contact Force (N)")
     axis.grid(True)
 
-
-
     axis = axes[0,1]
-    axis.step(t_vec, tau[0, :], label='hip_tau')
-    axis.step(t_vec, tau[1, :], label='thigh_tau')
-    axis.step(t_vec, tau[2, :], label='calf_tau')
+    axis.step(t_vec, tau[0, :], label='Hip joint torque (Nm)')
+    axis.step(t_vec, tau[1, :], label='Thigh joint torque (Nm)')
+    axis.step(t_vec, tau[2, :], label='Calf joint torque (Nm)')
     axis.legend()
     axis.set_title("Front Left Leg Joint Torque(Nm)")
     axis.grid(True)
@@ -151,10 +149,10 @@ def plot_mpc_result(t_vec, force, tau, x_vec, block):
 
 
     axis = axes[0,2]
-    axis.step(t_vec, x_vec[0, :], label='x_pos')
-    axis.step(t_vec, x_vec[1, :], label='y_pos')
-    axis.step(t_vec, x_vec[2, :], label='z_pos')
-    axis.set_title("Base Position")
+    axis.step(t_vec, x_vec[0, :], label='x-position')
+    axis.step(t_vec, x_vec[1, :], label='y-position')
+    axis.step(t_vec, x_vec[2, :], label='z-position')
+    axis.set_title("CoM Position")
     axis.legend()
     axis.grid(True)
 
@@ -167,17 +165,17 @@ def plot_mpc_result(t_vec, force, tau, x_vec, block):
     axis.grid(True)
 
     axis = axes[2,2]
-    axis.step(t_vec, x_vec[6, :], label='x_vel')
-    axis.step(t_vec, x_vec[7, :], label='y_vel')
-    axis.step(t_vec, x_vec[8, :], label='z_vel')
-    axis.set_title("Base Velocity")
+    axis.step(t_vec, x_vec[6, :], label='x-velocity')
+    axis.step(t_vec, x_vec[7, :], label='y-velocity')
+    axis.step(t_vec, x_vec[8, :], label='z-velocity')
+    axis.set_title("CoM Velocity")
     axis.legend()
     axis.grid(True)
 
     axis = axes[3,2]
-    axis.step(t_vec, x_vec[9, :], label='roll_rate')
-    axis.step(t_vec, x_vec[10, :], label='pitch_rate')
-    axis.step(t_vec, x_vec[11, :], label='yaw_rate')
+    axis.step(t_vec, x_vec[9, :], label='roll rate')
+    axis.step(t_vec, x_vec[10, :], label='pitch rate')
+    axis.step(t_vec, x_vec[11, :], label='yaw rate')
     axis.set_title("Base Angular Velocity")
     axis.legend()
     axis.grid(True)
@@ -190,28 +188,48 @@ def plot_swing_foot_traj(t_vec, foot_pos_now, foot_pos_des, foot_vel_now, foot_v
 
     fig, axes = plt.subplots(2, 1, figsize=(15, 10), constrained_layout=True)
 
+    plt.title("Left Front Foot Trajectory")
+
     axis = axes[0]
-    axis.plot(t_vec, foot_pos_now[0,:], color='r', label="pos_x")
-    axis.plot(t_vec, foot_pos_now[1,:], color='g', label="pos_y")
-    axis.plot(t_vec, foot_pos_now[2,:], color='b', label="pos_z")
-    axis.plot(t_vec, foot_pos_des[0,:], color='r', linestyle=':', linewidth=2.5, label="pos_x_des")
-    axis.plot(t_vec, foot_pos_des[1,:], color='g', linestyle=':', linewidth=2.5, label="pos_y_des")
-    axis.plot(t_vec, foot_pos_des[2,:], color='b', linestyle=':', linewidth=2.5, label="pos_z_des")
+    axis.plot(t_vec, foot_pos_now[0,:], color='r', label="Actual x-position")
+    axis.plot(t_vec, foot_pos_now[1,:], color='g', label="Actual y-position")
+    axis.plot(t_vec, foot_pos_now[2,:], color='b', label="Actual z-position")
+    axis.plot(t_vec, foot_pos_des[0,:], color='r', linestyle=':', linewidth=2.5, label="Desired x-position")
+    axis.plot(t_vec, foot_pos_des[1,:], color='g', linestyle=':', linewidth=2.5, label="Desired y-position")
+    axis.plot(t_vec, foot_pos_des[2,:], color='b', linestyle=':', linewidth=2.5, label="Desired z-position")
     axis.legend()
     axis.grid(True)
 
     axis = axes[1]
-    axis.plot(t_vec, foot_vel_now[0,:], color='r', label="vel_x")
-    axis.plot(t_vec, foot_vel_now[1,:], color='g', label="vel_y")
-    axis.plot(t_vec, foot_vel_now[2,:], color='b', label="vel_z")
-    axis.plot(t_vec, foot_vel_des[0,:], color='r', linestyle=':', label="vel_x_des")
-    axis.plot(t_vec, foot_vel_des[1,:], color='g', linestyle=':', label="vel_y_des")
-    axis.plot(t_vec, foot_vel_des[2,:], color='b', linestyle=':', label="vel_z_des")
+    axis.plot(t_vec, foot_vel_now[0,:], color='r', label="Actual x-velocity")
+    axis.plot(t_vec, foot_vel_now[1,:], color='g', label="Actual y-velocity")
+    axis.plot(t_vec, foot_vel_now[2,:], color='b', label="Actual z-velocity")
+    axis.plot(t_vec, foot_vel_des[0,:], color='r', linestyle=':', label="Desired x-velocity")
+    axis.plot(t_vec, foot_vel_des[1,:], color='g', linestyle=':', label="Desired y-velocity")
+    axis.plot(t_vec, foot_vel_des[2,:], color='b', linestyle=':', label="Desired z-velocity")
     axis.legend()
     axis.grid(True)
 
-    plt.show(block=block)   # shows both windows, doesn’t block
+
+
+    plt.show(block= block)   # shows both windows, doesn’t block
     plt.pause(0.001)        # lets the GUI event loop breathe
+
+def plot_solve_time(mpc_solve_time_s, MPC_DT, MPC_HZ, block):
+    plt.figure()
+    plt.plot(mpc_solve_time_s)
+    plt.axhline(y=MPC_DT * 1e3, color='r', linestyle='--',
+                linewidth=1.5, label=f'MPC update rate: {MPC_HZ} Hz ({MPC_DT*1e3} ms)')
+    plt.xlabel("MPC Iteration")
+    plt.ylabel("Time (ms)")
+    plt.title("QP Solve Time per Iteration")
+    plt.legend()
+    plt.grid(True)
+
+    plt.ylim(bottom=0)
+
+    plt.show(block=block)
+    plt.pause(0.001)
 
 def plot_full_traj(traj_ref, x_sim, block):
 
