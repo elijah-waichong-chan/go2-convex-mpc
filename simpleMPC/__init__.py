@@ -5,7 +5,7 @@ This package provides functionalities for controlling the Unitree Go2 robot usin
 """
 
 # You can define the version of your package here if you'd like
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 # Import relevant components/modules of your package
 # For example, if you have other Python files like `controller.py` and `planner.py`, you can import them here:
