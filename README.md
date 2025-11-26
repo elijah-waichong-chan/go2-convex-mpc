@@ -57,6 +57,68 @@ Together, these libraries form the computational backbone of the control and sim
 
 ---
 
+## Environment Setup
+### 1. Clone the repository
+```bash
+git clone https://github.com/elijah-waichong-chan/simpleMPC-unitree-go2.git
+cd simpleMPC-unitree-go2
+```
+### 2. Create a Conda environment
+```bash
+conda create -n go2 python=3.10.15 -y
+conda activate go2
+```
+
+### 3. Download & copy Unitree MuJoCo assets into the repo
+This project depends on the official Unitree MuJoCo models to run simulation.
+```bash
+git clone https://github.com/unitreerobotics/unitree_mujoco.git
+cp -r unitree_mujoco ./third_party/unitree_mujoco
+```
+
+Your repo structure should now look like:
+```
+simpleMPC-unitree-go2/
+└── third_party/
+    └── unitree_mujoco/
+```
+
+Then update the GO2 foot friction in the MuJoCo model:
+#### 1.Open:
+```
+third_party/unitree_mujoco/unitree_robots_go2/go2.xml
+```
+#### 2. Go to line 33 (the contact/geom friction definition for the feet) and change it to:
+```xml
+friction="0.8 0.02 0.01"/>
+```
+
+### 4. Download & copy Unitree GO2 URDF into the repo
+
+The Pinocchio model requires the official GO2 URDF and its meshes.  
+Unitree provides them as a downloadable ZIP archive.
+
+Download the GO2 URDF package:
+
+```bash
+wget https://oss-global-cdn.unitree.com/static/Go2_URDF.zip
+unzip Go2_URDF.zip
+```
+
+Copy the GO2 URDF into the project:
+```bash
+cp -r Go2_URDF/go2_description ./third_party/unitree_go2_description
+```
+
+Your directory structure should now include:
+```
+simpleMPC-unitree-go2/
+└── third_party/
+    ├── unitree_mujoco/
+    └── unitree_go2_description/
+```
+
+
 ## 🦿 Controller Overview
 
 Our motion control stack includes:
