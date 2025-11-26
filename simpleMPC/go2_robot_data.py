@@ -9,7 +9,8 @@ from numpy import cos, sin
 # --------------------------------------------------------------------------------
 
 REPO = Path(__file__).resolve().parents[1]
-URDF_PATH = REPO / "go2_description" / "urdf" / "go2_description.urdf"
+PACKAGE_DIRS = REPO / "third_party"
+URDF_PATH = PACKAGE_DIRS / "go2_description" / "urdf" / "go2_description.urdf"
 
 class ConfigurationState:
 
@@ -111,7 +112,7 @@ class PinGo2Model:
         # Build robot (free-flyer)
         robot = RobotWrapper.BuildFromURDF(
             str(URDF_PATH),
-            package_dirs=[str(REPO)],
+            package_dirs=[str(PACKAGE_DIRS)],
             root_joint=pin.JointModelFreeFlyer()
         )
 
