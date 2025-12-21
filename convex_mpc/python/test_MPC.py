@@ -66,7 +66,7 @@ SIM_HZ = 1000
 SIM_DT = 1.0 / SIM_HZ
 
 #Leg Coontroller Update Rate
-CTRL_HZ = 200
+CTRL_HZ = 200       # 200 Hz
 CTRL_DT = 1.0 / CTRL_HZ
 
 # Must be an integer ratio for clean decimation
