@@ -1,9 +1,11 @@
-/build/
-/.vscode/
-/convex_mpc/__pycache__
-/Miniconda3-latest-MacOSX-arm64.sh
-/docs
-/unitree_mujoco/
-/go2_description/
 /third_party/
+
+/convex_mpc/python/test_MPC_beta.py
+/convex_mpc/python/__pycache__
+
+/convex_mpc/cpp/build/
+
+/convex_mpc/cpp/
+
+
 

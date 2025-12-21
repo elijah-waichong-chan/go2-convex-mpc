@@ -8,7 +8,7 @@ from numpy import cos, sin
 # Model Setting
 # --------------------------------------------------------------------------------
 
-REPO = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[2]
 PACKAGE_DIRS = REPO / "third_party"
 URDF_PATH = PACKAGE_DIRS / "go2_description" / "urdf" / "go2_description.urdf"
 

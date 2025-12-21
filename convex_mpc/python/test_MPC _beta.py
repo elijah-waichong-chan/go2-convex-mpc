@@ -19,7 +19,7 @@ from plot_helper import plot_mpc_result, plot_swing_foot_traj, plot_full_traj, p
 # Simulation Setting
 INITIAL_X_POS = -5                  # The initial x-position of the robot
 INITIAL_Y_POS = 0                   # The initial y-position of the robot
-RUN_SIM_LENGTH_S = 10                # Adjust this to change the duration of simulation in seconds
+RUN_SIM_LENGTH_S = 5                # Adjust this to change the duration of simulation in seconds
 RENDER_HZ = 120.0                   # Adjust this to change the replay redering rate
 RENDER_DT = 1.0 / RENDER_HZ         # Time step of the simulation replay
 REALTIME_FACTOR = 1                 # Adjust this to change the replay speed (1 = realtime)
@@ -35,27 +35,21 @@ class BodyCmdPhase:
     yaw_rate: float
 
 CMD_SCHEDULE = [
-BodyCmdPhase(0.0, 1.0,  0.7, 0.0, 0.27, 0.0),   # Forward 0.7 m/s
-BodyCmdPhase(1.0, 1.5,  0.0, 0.0, 0.27, 0.0),   # Stop
-BodyCmdPhase(1.5, 3.0,  0.0, 0.3, 0.27, 0.0),   # Sideway 0.3 m/s
-BodyCmdPhase(3.0, 4.0,  0.0, 0.0, 0.27, 0.0),   # Stop
-BodyCmdPhase(4.0, 6.0,  0.0, 0.0, 0.27, 2.0),   # Rotate 2 rad/s
-BodyCmdPhase(6.0, 6.5,  0.0, 0.0, 0.27, 0.0),   # Stop
-BodyCmdPhase(6.5, 8.0,  0.6, 0.0, 0.27, 2.0),   # Forward 0.6 m/s + Rotate 2 rad/s
-BodyCmdPhase(8.0, 9.0,  0.8, 0.0, 0.27, 0.0),   # Forward 0.8 m/s
-BodyCmdPhase(9.0, 10.0,  0.0, 0.0, 0.27, 0.0),  # Stop
+BodyCmdPhase(0.0, 0.0,  0, 0.0, 0.27, 0.0),     # Stop
+BodyCmdPhase(1.0, 5.0,  0.5, 0.0, 0.27, 0.0),   # Forward
 ]
 
 # Gait Setting
 GAIT_HZ = 3             # Adjust this to change the frequency of the gait
-GAIT_DUTY = 0.6         # Adjust this to change the duty of the gait
+GAIT_DUTY = 0.5         # Adjust this to change the duty of the gait
 GAIT_T = 1.0 / GAIT_HZ  # Peirod of the gait
 
 # Trajectory Reference Setting
-x_vel_des_body = 0         # Adjust this to change the desired forward velocity
-y_vel_des_body = 0           # Adjust this to change the desired lateral velocity
-z_pos_des_body = 0.27        # Adjust this to change the desired height
-yaw_rate_des_body = 0       # Adjust this to change the desired roatation velocity
+x_vel_des_body = 0              # Adjust this to change the desired forward velocity
+y_vel_des_body = 0              # Adjust this to change the desired lateral velocity
+z_pos_des_body = 0.27           # Adjust this to change the desired height
+yaw_rate_des_body = 0           # Adjust this to change the desired roatation velocity
+
 
 # Leg Controller Loop Setting
 LEG_CTRL_HZ = 1000                                      # Leg controller (output torque) update rate

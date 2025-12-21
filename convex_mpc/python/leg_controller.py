@@ -7,8 +7,8 @@ from dataclasses import dataclass
 # Leg Controller Setting
 # --------------------------------------------------------------------------------
 
-KP_SWING = np.diag([500, 500, 500])
-KD_SWING = np.diag([200, 200, 200])
+KP_SWING = np.diag([400, 400, 400])
+KD_SWING = np.diag([75, 75, 75])
 
 # Mapping from leg name to index in the mask
 LEG_INDEX = {
