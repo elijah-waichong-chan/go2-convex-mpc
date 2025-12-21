@@ -22,7 +22,7 @@ from plot_helper import plot_mpc_result, plot_swing_foot_traj, plot_full_traj, p
 # Simulation Setting
 INITIAL_X_POS = -5
 INITIAL_Y_POS = 0
-RUN_SIM_LENGTH_S = 10.0
+RUN_SIM_LENGTH_S = 1.0
 
 RENDER_HZ = 120.0
 RENDER_DT = 1.0 / RENDER_HZ
