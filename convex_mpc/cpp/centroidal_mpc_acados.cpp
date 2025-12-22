@@ -1,6 +1,5 @@
 #include "centroidal_mpc_acados.hpp"
 #include <cstring>
-#include <iostream>
 
 CentroidalMpcAcados::CentroidalMpcAcados() {
   capsule_ = centroidal_mpc_hpipm_acados_create_capsule();
@@ -46,10 +45,7 @@ void CentroidalMpcAcados::set_stage_yref(int stage, const std::array<double, ny>
 }
 
 void CentroidalMpcAcados::set_terminal_yref(const std::array<double, nx>& yref_e) {
-  int N_horizon = ocp_nlp_dims_get_from_attr(nlp_config_, nlp_dims_, nlp_out_, 0, "N");
-  int stageN = (N_horizon > 0) ? N_horizon : 20;  // fallback if something weird
-
-  ocp_nlp_cost_model_set(nlp_config_, nlp_dims_, nlp_in_, stageN, "yref", (void*)yref_e.data());
+  ocp_nlp_cost_model_set(nlp_config_, nlp_dims_, nlp_in_, N, "yref", (void*)yref_e.data());
 }
 
 int CentroidalMpcAcados::solve() {

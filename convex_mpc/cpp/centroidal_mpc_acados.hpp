@@ -19,6 +19,9 @@ public:
   static constexpr int np = 12 * 12 + 12 * 12 + 12; // A(144)+B(144)+x_ref(12)=300
   static constexpr int ny = nx + nu;
 
+  static constexpr int N = CENTROIDAL_MPC_HPIPM_N;
+  int horizon() const { return N; }
+
   // Constructor & Destructor
   explicit CentroidalMpcAcados();
   ~CentroidalMpcAcados();
