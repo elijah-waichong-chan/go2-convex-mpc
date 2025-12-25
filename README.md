@@ -9,9 +9,9 @@ Developed as part of the **UC Berkeley Master of Engineering (MEng)** capstone p
 
 ## Introduction
 
-This repository contains a full implementation of a **Convex Model Predictive Controller (MPC)** for the Unitree Go2 quadruped robot in MuJoCo simulation.
+This repository contains a full implementation of a **Convex Model Predictive Controller (MPC)** in MuJoCo simulation with a Unitree Go2 quadruped robot .
 
-The controller is designed following the methodology described in the MIT publication:
+The controller is designed following the methodology described in the following publication:
 
 > **"Dynamic Locomotion in the MIT Cheetah 3 Through Convex Model-Predictive Control"**  
 > https://dspace.mit.edu/bitstream/handle/1721.1/138000/convex_mpc_2fix.pdf
@@ -21,7 +21,7 @@ The objective of this project is to reproduce the main ideas presented in the pa
 ---
 ## Locomotion Capabilities
 
-The controller achieves the following performance in MuJoCo simulation using the convex MPC + leg controller pipeline:
+The controller achieves the following performance in MuJoCo simulation:
 
 ### Linear Motion
 - **Forward speed:** up to **0.8 m/s**
