@@ -87,7 +87,7 @@ If you see import errors (e.g., ModuleNotFoundError: convex_mpc) rerun:
 pip install -e .
 ```
 
-### 3. Quick check (Optional)
+### 3. Quick check
 Recommended on Linux if you have pip --user packages installed:
 ```bash
 export PYTHONNOUSERSITE=1
