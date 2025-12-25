@@ -88,6 +88,12 @@ pip install -e .
 ```
 
 ### 3. Quick check (Optional)
+Recommended on Linux if you have pip --user packages installed:
+```bash
+export PYTHONNOUSERSITE=1
+```
+Run import check:
+
 ```bash
 python - <<'PY'
 import mujoco, pinocchio, casadi, convex_mpc
