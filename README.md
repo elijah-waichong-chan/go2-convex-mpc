@@ -29,13 +29,17 @@ The controller achieves the following performance in MuJoCo simulation:
 - **Lateral (sideways) speed:** up to **0.4 m/s**
 <p align="center">
   <img src="media/forward_walking.gif" width="300">
-  <img src="media/side_walking.gif" width="300">
+  <img src="media/side_walking.gif" width="300"><br/>
+  <sub><b>examples/ex02</b>: Forward walking &nbsp;&nbsp; <b>examples/ex03</b>: Side walking</sub>
 </p>
-
 
 ### Rotational Motion
 - **Yaw rotational speed:** up to **4.0 rad/s**
-<p align="center"> <img src="media/yaw_rotation.gif" width="600"> </p>
+
+<p align="center">
+  <img src="media/yaw_rotation.gif" width="600"><br/>
+  <sub><b>examples/ex04</b>: Trot rotation</sub>
+</p>
 
 
 ### Supported Gaits
@@ -78,18 +82,36 @@ git clone https://github.com/elijah-waichong-chan/convex-mpc-unitree-go2.git
 cd convex-mpc-unitree-go2
 ```
 
-### 2. Create a Conda environment (Optional)
+### 2. Create a Conda environment
 ```bash
-conda create -n go2 python=3.10 -y
-conda activate go2
+conda env create -f environment.yml
+conda activate go2-convex-mpc
 ```
 
-### 3. Install Dependencies
-
+### 3. Install the Python package
 ```bash
-conda install pinocchio -c conda-forge
-conda install casadi -c conda-forge
-pip install mujoco==3.2.7
+pip install -e .
+```
+
+### 4. Quick check (Optional)
+```bash
+python - <<'PY'
+import mujoco, pinocchio, casadi, convex_mpc
+print("mujoco:", mujoco.__version__)
+print("pinocchio:", pinocchio.__version__)
+print("casadi:", casadi.__version__)
+print("convex_mpc: OK")
+PY
+```
+
+## Run Examples
+Run any demo from the repo root:
+```bash
+python -m examples.ex00_demo
+python -m examples.ex01_trot_in_place
+python -m examples.ex02_trot_forward
+python -m examples.ex03_trot_sideway
+python -m examples.ex04_trot_rotation
 ```
 
 ## Version Requirements
@@ -103,7 +125,12 @@ pip install mujoco==3.2.7
 
 12/24/2025
 - Added URDF and MJCF model to the repo.
-- Simplified installation steps, no longer need to download URDF models and unitree_mujoco library.
+- Simplified installation steps — no longer need to download URDF models and the `unitree_mujoco` library.
+- Restructured the repo into a proper Python package
+- Added `pyproject.toml` so the project can be installed
+- Added a Conda `environment.yml` to automate dependency setup
+- Added `examples/` demos
+
 
 12/21/2025
 - Reduced the overall controller loop from 1000 Hz → 200 Hz in preparation for real-time deployment; no observed performance degradation.
