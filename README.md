@@ -5,8 +5,6 @@ Developed as part of the **UC Berkeley Master of Engineering (MEng)** capstone p
 
 > **Under development:** A C++ implementation targeting real-time performance is in progress. See the **Updates** section below for the latest status.
 
----
-
 ## Introduction
 
 This repository contains a full implementation of a **Convex Model Predictive Controller (MPC)** in MuJoCo simulation with a Unitree Go2 quadruped robot .
@@ -18,7 +16,6 @@ The controller is designed following the methodology described in the following 
 
 The objective of this project is to reproduce the main ideas presented in the paper — particularly the **contact-force MPC formulation**, convex optimization structure, and robust locomotion behavior—while integrating them into a modern, modular robotics control pipeline.
 
----
 ## Locomotion Capabilities
 
 The controller achieves the following performance in MuJoCo simulation:
@@ -63,8 +60,6 @@ Generates centroidal trajectory for MPC based on user input.
     - Determines stance/swing timing
     - Compute touchdown position for swing-foot using Raibert style foot placement method and - - Compute swing-leg trajectory using minimal jerk quintic polynomial with adjustable apex height
 
----
-
 ## Libraries Used
 
 ### Physics Simulation
@@ -72,8 +67,6 @@ Generates centroidal trajectory for MPC based on user input.
 
 ### Kinematics and Dynamics
 - **Pinocchio** — https://github.com/stack-of-tasks/pinocchio *(tested: 3.6.x)*
-
----
 
 ## Installation and Dependencies
 ### 1. Clone the repository
@@ -115,12 +108,20 @@ python -m examples.ex03_trot_sideway
 python -m examples.ex04_trot_rotation
 ```
 
+### Plots
+After running each example script, summary plots will be generated
+
+The figures below are generated from running **`examples/ex00_demo.py`**:
+#### MPC Runtime Performance
+<p align="center"> <img src="media/mpc_timing_stats.png" width="700"><br/> <sub> <b>MPC iteration timing.</b> Average model update time ≈ 1.50 ms, average QP solve time ≈ 2.75 ms, total MPC cycle time ≈ 4.25 ms, running comfortably within a 48 Hz real-time budget (20.8 ms). </sub> </p>
+
+#### MPC State, Force, and Torque Logs
+<p align="center"> <img src="media/mpc_state_force_logs.png" width="900"><br/> <sub> <b>Centroidal MPC logs.</b> Optimized ground reaction forces for all four feet, joint torques, center-of-mass position and velocity, ZYX Euler angles, and body angular velocities during a command-scheduled locomotion sequence. </sub> </p>
+
 ## Version Requirements
 
 - **NumPy:** `>=1.24,<2.0`  
 
-
----
 
 ## Updates
 
