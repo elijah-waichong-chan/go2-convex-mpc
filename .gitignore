@@ -1,8 +1,3 @@
 /third_party/
-
-/convex_mpc/python/test_MPC_beta.py
-/convex_mpc/python/__pycache__
-
-/convex_mpc/cpp/build/
-
+/src/python/convex_mpc/__pycache__
 
