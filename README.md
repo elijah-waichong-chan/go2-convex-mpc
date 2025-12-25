@@ -63,12 +63,13 @@ Generates centroidal trajectory for MPC based on user input.
 ## Libraries Used
 
 ### Physics Simulation
-- **MuJoCo** — https://github.com/google-deepmind/mujoco *(tested: 3.2.7)*
+- **MuJoCo** — https://github.com/google-deepmind/mujoco
 
 ### Kinematics and Dynamics
-- **Pinocchio** — https://github.com/stack-of-tasks/pinocchio *(tested: 3.6.x)*
+- **Pinocchio** — https://github.com/stack-of-tasks/pinocchio
 
 ## Installation and Dependencies
+Linux is recommended, other OS not tested.
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/elijah-waichong-chan/go2-convex-mpc.git
@@ -82,7 +83,6 @@ conda activate go2-convex-mpc
 ```
 
 If you see import errors (e.g., ModuleNotFoundError: convex_mpc) rerun:
-
 ```bash
 pip install -e .
 ```
