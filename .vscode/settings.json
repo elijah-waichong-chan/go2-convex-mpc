@@ -12,5 +12,9 @@
 
   "cmake.configureEnvironment": {
     "ACADOS_SOURCE_DIR": "/home/elijah/convex-mpc-unitree-go2/third_party/acados"
-  }
+  },
+  "python.analysis.extraPaths": [
+    "./third_party/acados/interfaces/acados_template"
+  ],
+  
 }
