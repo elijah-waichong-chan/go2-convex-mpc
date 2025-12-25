@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "c_generated_code/centroidal_mpc_hpipm",
+		"source" : "c_generated_code/centroidal_mpc_hpipm"
+	}
+}
