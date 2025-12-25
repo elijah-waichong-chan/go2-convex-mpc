@@ -3,7 +3,7 @@ This repository implements a full **Convex Model Predictive Controller (MPC)** f
 
 Developed as part of the **UC Berkeley Master of Engineering (MEng)** capstone project in Mechanical Engineering.
 
-*This repo is still under development. Breaking changes are expected. Check "Updates" section below for latest updates.
+> **Under development:** A C++ implementation targeting real-time performance is in progress. See the **Updates** section below for the latest status.
 
 ---
 
